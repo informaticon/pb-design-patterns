@@ -51,16 +51,18 @@ private long pl_stdout_handle
 end variables
 
 forward prototypes
-public function long of_log (string as_message)
+public subroutine of_log (string as_message)
 public subroutine of_set_output (long al_output_type)
 end prototypes
 
-public function long of_log (string as_message);int li_file
+public subroutine of_log (string as_message);int li_file
 choose case pl_output_type
 	case CL_OUTPUT_TYPE_FILE
 		li_file = fileopen('out.log', linemode!, write!, lockwrite!, append!, encodingutf8!)
-		if li_file <= 0 then 
-			return li_file
+		if li_file <= 0 then
+			throw(gu_e.iu_as.of_re_io(gu_e.of_new_error('cannot open file') &
+				.of_push('as_message', as_message) &
+			))
 		end if
 		try
 			filewriteex(li_file, as_message)
@@ -69,16 +71,18 @@ choose case pl_output_type
 		end try
 	case CL_OUTPUT_TYPE_STDOUT
 		long ll_result
-		if handle(getapplication()) = 0 or isnull(pl_stdout_handle) then
-			// TODO: fallback to sth else
-			// no console attached
-		else
-		   as_message += '~r~n'
-		   pef_write_console(pl_stdout_handle, as_message, len(as_message), ll_result, 0)
+		if handle(getapplication()) = 0 then
+			// PB mode => no logging
+			return
 		end if
+		if isnull(pl_stdout_handle) then
+			throw(gu_e.iu_as.of_re_io(gu_e.of_new_error('no console attached')))
+		end if
+		as_message += '~r~n'
+		pef_write_console(pl_stdout_handle, as_message, len(as_message), ll_result, 0)
 end choose
 
-end function
+end subroutine
 
 public subroutine of_set_output (long al_output_type);pl_output_type = al_output_type
 end subroutine

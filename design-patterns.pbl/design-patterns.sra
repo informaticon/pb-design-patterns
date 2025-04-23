@@ -11,7 +11,7 @@ end forward
 
 global variables
 u_logger gu_logger
-
+u_exf_error_manager gu_e
 end variables
 
 global type design-patterns from application
@@ -68,8 +68,9 @@ destroy(error)
 destroy(message)
 end on
 
-event open;gu_logger = create u_logger
-gu_logger.of_set_output(u_logger.CL_OUTPUT_TYPE_STDOUT)
+event open;gu_e = create u_exf_error_manager
+gu_logger = create u_logger
+gu_logger.of_set_output(u_logger.CL_OUTPUT_TYPE_FILE)
 
 open(w_main)
 end event
@@ -77,5 +78,14 @@ end event
 event close;if handle(getapplication()) > 0 then
    gef_exit_process(0)
 end if
+end event
+
+event systemerror;gu_e.of_display(gu_e.of_new_error() &
+	.of_set_nested_error(gu_e.of_get_last_error()) &
+	.of_push(1 /*populateerror()-Return*/) &
+	.of_set_message('systemerror occured') &
+	.of_push('Hinweis', 'Achtung: eventuell eingebettete Exceptions müssen nicht zwingend etwas mit diesem Fehler zu tun haben.') &
+	.of_set_type('u_exf_re_systemerror') &
+)
 end event
 
