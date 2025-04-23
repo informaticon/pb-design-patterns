@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<Project>
+  <Type Name="pb"/>
+  <Application Name="design-patterns"/>
+  <Libraries AppEntry="design-patterns.pbl">
+    <Library Path="design-patterns.pbl"/>
+    <Library Path="log.pbl"/>
+  </Libraries>
+</Project>
