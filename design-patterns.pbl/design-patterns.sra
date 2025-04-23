@@ -69,7 +69,10 @@ destroy(message)
 end on
 
 event open;gu_e = create u_exf_error_manager
-gu_logger = create u_logger_stdout
+gu_logger = create u_logger
+u_log_writer lu_writer
+lu_writer = create u_log_writer_stdout
+gu_logger.of_set_writer(lu_writer)
 
 open(w_main)
 end event

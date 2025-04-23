@@ -1,12 +1,12 @@
 //objectcomments  
 forward
-global type u_logger_stdout from u_logger
+global type u_log_writer_stdout from u_log_writer
 end type
 end forward
 
-global type u_logger_stdout from u_logger
+global type u_log_writer_stdout from u_log_writer
 end type
-global u_logger_stdout u_logger_stdout
+global u_log_writer_stdout u_log_writer_stdout
 
 type prototypes
 
@@ -43,10 +43,10 @@ private long pl_stdout_handle
 end variables
 
 forward prototypes
-public subroutine of_log (string as_message)
+public subroutine of_write (string as_message)
 end prototypes
 
-public subroutine of_log (string as_message);long ll_result
+public subroutine of_write (string as_message);long ll_result
 if handle(getapplication()) = 0 then
 	// PB mode => no logging
 	return
@@ -54,24 +54,25 @@ end if
 if isnull(pl_stdout_handle) then
 	throw(gu_e.iu_as.of_re_io(gu_e.of_new_error('no console attached')))
 end if
+
 as_message += '~r~n'
 pef_write_console(pl_stdout_handle, as_message, len(as_message), ll_result, 0)
 end subroutine
 
-on u_logger_stdout.create
+on u_log_writer_stdout.create
 call super::create
 end on
 
-on u_logger_stdout.destroy
+on u_log_writer_stdout.destroy
 call super::destroy
 end on
 
 event constructor;call super::constructor;// get stdout handle of parent process
 setnull(pl_stdout_handle)
 if handle(getapplication()) > 0 then
-   if pef_attach_console(-1) then // -1=attach to parent process
-      pl_stdout_handle = pef_get_std_handle(-11) // -11=stdout
-   end if
+	if pef_attach_console(-1) then // -1=attach to parent process
+	  pl_stdout_handle = pef_get_std_handle(-11) // -11=stdout
+	end if
 end if
 
 end event
@@ -79,6 +80,5 @@ end event
 event destructor;call super::destructor;if not isnull(pl_stdout_handle) then
 	pef_free_console()
 end if
-
 end event
 

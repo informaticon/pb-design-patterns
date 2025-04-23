@@ -13,14 +13,20 @@ type prototypes
 end prototypes
 
 type variables
-
+private u_log_writer pu_writer
 end variables
 
 forward prototypes
 public subroutine of_log (string as_message)
+public subroutine of_set_writer (u_log_writer au_writer)
 end prototypes
 
-public subroutine of_log (string as_message);throw(gu_e.iu_as.of_re_notimplemented(gu_e.of_new_error('this is an abstract function which must be overritten by its ancestors')))
+public subroutine of_log (string as_message);if isvalid(pu_writer) then
+	pu_writer.of_write(as_message)
+end if
+end subroutine
+
+public subroutine of_set_writer (u_log_writer au_writer);pu_writer = au_writer
 end subroutine
 
 on u_logger.create
