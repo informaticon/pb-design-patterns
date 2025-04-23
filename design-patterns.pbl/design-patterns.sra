@@ -10,7 +10,6 @@ global message message
 end forward
 
 global variables
-u_logger gu_logger
 u_exf_error_manager gu_e
 end variables
 
@@ -69,10 +68,9 @@ destroy(message)
 end on
 
 event open;gu_e = create u_exf_error_manager
-gu_logger = create u_logger
 u_log_writer lu_writer
 lu_writer = create u_log_writer_stdout
-gu_logger.of_set_writer(lu_writer)
+gf_get_logger().of_set_writer(lu_writer)
 
 open(w_main)
 end event

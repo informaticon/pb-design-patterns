@@ -1,0 +1,14 @@
+global type gf_get_logger from function_object
+end type
+
+forward prototypes
+global function u_logger gf_get_logger ()
+end prototypes
+
+global function u_logger gf_get_logger ();if not isvalid(u_logger) then
+	u_logger = create u_logger
+end if
+
+return u_logger
+end function
+

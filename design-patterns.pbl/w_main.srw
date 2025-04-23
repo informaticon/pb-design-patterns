@@ -74,6 +74,6 @@ string text = "Send"
 boolean default = true
 end type
 
-event clicked;gu_logger.of_log(sle_message.text)
+event clicked;gf_get_logger().of_log(sle_message.text)
 end event
 
