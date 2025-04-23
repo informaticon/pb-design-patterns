@@ -68,11 +68,12 @@ destroy(message)
 end on
 
 event open;gu_e = create u_exf_error_manager
-u_log_writer lu_writer
-lu_writer = create u_log_writer_stdout
-gf_get_logger().of_set_writer(lu_writer)
 
+gf_get_logger().of_set_writer( &
+    gf_log_new_filewriter().of_set_file('test.log').of_set_max_file_size(2048) &
+)
 open(w_main)
+
 end event
 
 event close;if handle(getapplication()) > 0 then

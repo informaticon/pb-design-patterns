@@ -1,0 +1,13 @@
+global type gf_log_new_filewriter from function_object
+end type
+
+forward prototypes
+global function u_log_writer_file gf_log_new_filewriter ()
+end prototypes
+
+global function u_log_writer_file gf_log_new_filewriter ();u_log_writer_file lu_writer
+lu_writer = create u_log_writer_file
+return lu_writer
+
+end function
+

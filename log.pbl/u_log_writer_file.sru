@@ -8,8 +8,16 @@ global type u_log_writer_file from u_log_writer
 end type
 global u_log_writer_file u_log_writer_file
 
+type variables
+protected string ps_file
+protected ulong pul_max_file_size
+end variables
+
 forward prototypes
 public subroutine of_write (string as_message)
+public function u_log_writer_file of_set_file (string as_filepath)
+public function u_log_writer_file of_set_max_file_size (unsignedlong aul_byte)
+protected subroutine pf_rotate_log ()
 end prototypes
 
 public subroutine of_write (string as_message);int li_file
@@ -24,15 +32,28 @@ try
 finally
 	fileclose(li_file)
 end try
+
+pf_rotate_log()
+end subroutine
+
+public function u_log_writer_file of_set_file (string as_filepath);ps_file = as_filepath
+
+return this
+end function
+
+public function u_log_writer_file of_set_max_file_size (unsignedlong aul_byte);pul_max_file_size = aul_byte
+
+return this
+end function
+
+protected subroutine pf_rotate_log ();//TODO
 end subroutine
 
 on u_log_writer_file.create
 call super::create
-TriggerEvent( this, "constructor" )
 end on
 
 on u_log_writer_file.destroy
-TriggerEvent( this, "destructor" )
 call super::destroy
 end on
 
