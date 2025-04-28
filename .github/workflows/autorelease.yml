@@ -11,9 +11,10 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
       
+      # compiler.zip contains the folder contents of a specific PB runtime and the PB utilities
       - name: Setup compiler
         run: |
-          Invoke-WebRequest -OutFile "compiler.zip" -Uri "https://transfer.informaticon.com/file/public/TZaJsrJTlvDymlaSnCdjGtGdnjVlPED9RTRTaCFldFTyNfzJl4Wau4VtgmZBX51y/pb-compiler_25.0.0.3674.zip?direct=true"
+          Invoke-WebRequest -OutFile "compiler.zip" -Uri "${{ secrets.PB_COMPILER_URL }}"
           Expand-Archive -Path compiler.zip -DestinationPath compiler -Force
 
       - name: Build executable
