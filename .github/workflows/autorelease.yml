@@ -35,6 +35,7 @@ jobs:
 
       - name: Create release
         uses: softprops/action-gh-release@v2
+        if: ${{ steps.tag_version.outputs.release_type != '' }}
         with:
           files: "design-pattern.zip"
           tag_name: ${{ steps.tag_version.outputs.new_tag }}
