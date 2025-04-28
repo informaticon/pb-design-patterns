@@ -1,0 +1,183 @@
+@startuml logComplete
+scale 2
+
+class w_main {}
+
+class u_logger {
+  # pu_writer : u_log_writer
+  + of_log(as_message : string)
+  + of_set_writer(au_writer : u_log_writer)
+}
+u_logger o-- u_log_writer
+w_main --> u_logger
+abstract class u_log_writer {
+  + {abstract} of_write(as_message : string)
+}
+
+class u_log_writer_file {
+  # ps_file : string
+  # pul_max_file_size : ulong
+  + of_write(as_message : string)
+  + of_set_file(string as_filepath) : u_log_writer_file
+  + of_set_max_file_size(long aul_byte) : u_log_writer_file
+  # pf_rotate_log()
+}
+u_log_writer_file --|> u_log_writer
+
+class u_log_writer_stdout {
+  - pl_stdout_handle : long
+  + of_write(as_message : string)
+}
+u_log_writer_stdout --|> u_log_writer
+
+class u_log_writer_adapter {
+  + of_write(as_message : string)
+  + ue_write(as_message : string)
+}
+class u_log_display {
+  # pf_write
+}
+u_log_writer_adapter --|> u_log_writer
+u_log_display [iu_log_writer_adapter] *-- u_log_writer_adapter
+w_main [iu_log] *-- u_log_display
+@enduml
+
+
+
+
+@startuml logFactory
+scale 2
+
+class w_main {}
+
+class u_logger {
+  # pu_writer : u_log_writer
+  + of_log(as_message : string)
+  + of_set_writer(au_writer : u_log_writer)
+}
+u_logger o-- u_log_writer
+w_main --> u_logger
+abstract class u_log_writer {
+  + {abstract} of_write(as_message : string)
+}
+
+class u_log_writer_file {
+  # ps_file : string
+  # pul_max_file_size : ulong
+  + of_write(as_message : string)
+  + of_set_file(string as_filepath) : u_log_writer_file
+  + of_set_max_file_size(long aul_byte) : u_log_writer_file
+  # pf_rotate_log()
+}
+u_log_writer_file --|> u_log_writer
+
+class u_log_writer_stdout {
+  - pl_stdout_handle : long
+  + of_write(as_message : string)
+}
+u_log_writer_stdout --|> u_log_writer
+@enduml
+
+
+
+
+@startuml logAggregation
+scale 2
+
+class w_main {}
+
+class u_logger {
+  # pu_writer : u_log_writer
+  + of_log(as_message : string)
+  + of_set_writer(au_writer : u_log_writer)
+}
+u_logger o-- u_log_writer
+w_main --> u_logger
+abstract class u_log_writer {
+  + {abstract} of_write(as_message : string)
+}
+
+class u_log_writer_file {
+  + of_write(as_message : string)
+}
+u_log_writer_file --|> u_log_writer
+
+class u_log_writer_stdout {
+  - pl_stdout_handle : long
+  + of_write(as_message : string)
+}
+u_log_writer_stdout --|> u_log_writer
+@enduml
+
+
+
+
+@startuml logInheritance
+scale 2
+
+class w_main {}
+
+class u_logger {
+  + {abstract} of_log(as_message : string)
+}
+w_main --> u_logger
+
+class u_logger_file {
+  + of_write(as_message : string)
+}
+u_logger_file -u-|> u_logger
+
+class u_logger_stdout {
+  - pl_stdout_handle : long
+  + of_write(as_message : string)
+}
+u_logger_stdout -u-|> u_logger
+@enduml
+
+
+
+
+@startuml logException
+scale 2
+package main {
+  class application <<global>> {
+    +gu_logger
+    +gu_e
+  }
+  class w_main {}
+}
+package log {
+  class u_logger {
+    - pl_output_type : long
+    - pl_stdout_handle : long
+    + of_log(as_message : string)
+    + of_set_output(al_output_type : long)
+  }
+}
+package exf {
+  class u_exf_error_manager {}
+}
+w_main --> u_logger
+@enduml
+
+
+
+
+@startuml logBasic
+scale 2
+package main {
+  class application <<global>> {
+    +gu_logger
+  }
+  class w_main {}
+}
+package log {
+  class u_logger {
+    - pl_output_type : long
+    - pl_stdout_handle : long
+    + of_log(as_message : string)
+    + of_set_output(al_output_type : long)
+  }
+}
+w_main --> u_logger
+@enduml

@@ -6,10 +6,15 @@ SRC_FILES := $(wildcard *.pbl/*.*)
 run: design-patterns.exe
 	design-patterns.exe
 
+
 design-patterns.exe: $(SRC_FILES)
 	pbautobuild250 /pbc /d design-patterns.pbproj
 
 
+.PHONY: puml
+puml: $(SRC_FILES)
+	plantuml -o diagrams diagrams/genericDiagrams.puml
+	plantuml -o diagrams diagrams/powerbuilderDiagrams.puml
 
 
 .PHONY: clean

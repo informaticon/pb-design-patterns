@@ -1,0 +1,124 @@
+@startuml classSimple
+scale 4
+Vehicle : move()
+Vehicle : weight
+@enduml
+
+
+@startuml objectSimple
+scale 4
+object tomsCar
+tomsCar : weight = 1600
+@enduml
+
+
+@startuml classAssociation
+scale 4
+Vehicle : accelerate()
+Vehicle : weight
+Vehicle : owner : Person
+Person -- Vehicle : ownership
+@enduml
+
+
+@startuml classAggreCompo
+scale 4
+skinparam nodesep 80
+class Vehicle {
+  accelerate()
+  weight
+  passengers[]
+}
+Vehicle o-l- "0..*"  Person
+Vehicle *-r- "1..*" Wheel
+@enduml
+
+
+@startuml classInheritance
+scale 4
+Vehicle <|-- Car
+Vehicle <|-- Bicycle
+
+Vehicle : accelerate()
+Vehicle : weight
+
+Car : fuelType
+Car : honk()
+
+Bicycle : saddleMaterial
+Bicycle : ring()
+@enduml
+
+
+@startuml classInterface
+scale 4
+interface Engine {
+  start()
+  stop()
+}
+class ElectricEngine {
+  start()
+  stop()
+  charge()
+}
+class CombustionEngine {
+  start()
+  stop()
+  refuel()
+}
+ElectricEngine .u.|> Engine
+CombustionEngine .u.|> Engine
+@enduml
+
+
+@startuml classPolyOverRideLoad
+scale 4
+skinparam nodesep 80
+class Vehicle {
+  accelerate()
+  accelerate(duration, finalSpeed)
+  weight
+}
+class Car {
+  fuelType
+  honk()
+  **accelerate()**
+}
+Vehicle <|-r- Car
+@enduml
+
+
+@startuml classPolyGenerics
+scale 4
+class Car<T implements Engine> {
+  Car(engine: T)
+}
+interface Engine {
+  start()
+  stop()
+}
+class ElectricEngine {
+  start()
+  stop()
+  charge()
+}
+class CombustionEngine {
+  start()
+  stop()
+  refuel()
+}
+Car *-- Engine : uses generic type
+ElectricEngine .u.|> Engine
+CombustionEngine .u.|> Engine
+@enduml
+
+
+
+@startuml Visibility
+scale 4
+class Car {
+  #weight
+  +honk()
+  -setHonkPin(state : bool)
+}
+@enduml

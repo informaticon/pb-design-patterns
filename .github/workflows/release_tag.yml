@@ -1,0 +1,33 @@
+name: create release asset
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      
+      - name: Setup compiler
+        run: |
+          Invoke-WebRequest -OutFile "compiler.zip" -Uri "https://transfer.informaticon.com/file/public/TZaJsrJTlvDymlaSnCdjGtGdnjVlPED9RTRTaCFldFTyNfzJl4Wau4VtgmZBX51y/pb-compiler_25.0.0.3674.zip?direct=true"
+          Expand-Archive -Path compiler.zip -DestinationPath compiler -Force
+
+      - name: Build executable
+        working-directory: "compiler"
+        run: |
+          ./pbautobuild250 /pbc /d "${{ github.workspace }}/design-patterns.pbproj"
+
+      - name: Create asset
+        run: |
+          Get-ChildItem -Path ./* -Include "*.pbd","*.exe","*.dll" | Compress-Archive -DestinationPath "design-pattern.zip"
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: "design-pattern.zip"
+          tag_name: ${{ github.ref_name }}

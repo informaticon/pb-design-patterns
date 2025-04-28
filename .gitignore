@@ -4,3 +4,4 @@ build
 *.usr.opt
 *.exe
 *.pbd
+/puml/*.png
