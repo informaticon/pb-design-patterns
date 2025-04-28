@@ -11,6 +11,3 @@ You can either run the application using the PowerBuilder IDE or compile it usin
 
 The workflow files are just examples.
 In order to use them, you need to pack your own PowerBuilder compiler files and make them available to the Github Runner.
-
-
-
